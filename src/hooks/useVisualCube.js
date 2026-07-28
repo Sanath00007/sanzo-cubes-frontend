@@ -41,7 +41,7 @@ function rotateVector(axis, angle) {
     return [0, 0, angle];
 }
 
-export default function useVisualCube(cube, animation) {
+export default function useVisualCube(cube, animation, colorCube = cube) {
     return useMemo(() => {
         if (!cube) {
             return [];
@@ -72,13 +72,13 @@ export default function useVisualCube(cube, animation) {
                         id: `${x}_${y}_${z}`,
                         position,
                         rotation: onAnimatedLayer ? rotateVector(animationConfig.axis, angle) : [0, 0, 0],
-                        colors: getCubieColors(x, y, z, cube)
+                        colors: getCubieColors(x, y, z, colorCube)
                     });
                 }
             }
         }
 
         return newCubies;
-    }, [cube, animation]);
+    }, [cube, animation, colorCube]);
 
 }

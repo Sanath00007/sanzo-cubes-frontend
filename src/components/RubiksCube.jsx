@@ -1,9 +1,16 @@
 import Cubie from "./Cubie";
 import useVisualCube from "../hooks/useVisualCube";
+import { useMoveAnimationSnapshot } from "../hooks/useMovePlayback";
 
-export default function RubiksCube({ cube, animation }) {
+export default function RubiksCube({ cube, stickerCube }) {
 
-    const cubies = useVisualCube(cube, animation);
+    const animation = useMoveAnimationSnapshot();
+
+    const cubies = useVisualCube(
+        cube,
+        animation.active ? animation : null,
+        stickerCube ?? cube
+    );
 
     return (
 

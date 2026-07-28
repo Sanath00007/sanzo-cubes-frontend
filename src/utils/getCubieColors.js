@@ -1,17 +1,17 @@
 function color(letter) {
     switch (letter) {
         case 'W':
-            return "white";
+            return "#f5f5f5";
         case 'Y':
-            return "yellow";
+            return "#ffd400";
         case 'R':
-            return "red";
+            return "#e53935";
         case 'O':
-            return "orange";
+            return "#ff7a00";
         case 'G':
-            return "green";
+            return "#1db954";
         case 'B':
-            return "blue";
+            return "#1976d2";
         default:
             return "#111";
     }
