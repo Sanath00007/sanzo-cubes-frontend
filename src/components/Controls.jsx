@@ -1,34 +1,10 @@
-import api from "../services/api";
-
-export default function Controls({ loadCube, setSolution }) {
-
-    async function move(moveName) {
-        await api.post("/move", {
-            move: moveName
-        });
-
-        await loadCube();
-    }
-
-    async function reset() {
-        await api.post("/reset");
-        setSolution("");
-        await loadCube();
-    }
-
-    async function scramble() {
-        await api.post("/scramble");
-        setSolution("");
-        await loadCube();
-    }
-
-    async function solve() {
-
-        const response = await api.post("/solve");
-
-        setSolution(response.data.solution);
-
-    }
+export default function Controls({
+    onMove,
+    onReset,
+    onScramble,
+    onSolve,
+    disabled
+}) {
 
     const moves = [
         "R","R_PRIME","R2",
@@ -45,8 +21,9 @@ export default function Controls({ loadCube, setSolution }) {
             {moves.map(m=>(
                 <button
                     key={m}
-                    onClick={()=>move(m)}
+                    onClick={() => onMove(m)}
                     style={{margin:5}}
+                    disabled={disabled}
                 >
                     {m}
                 </button>
@@ -54,11 +31,11 @@ export default function Controls({ loadCube, setSolution }) {
 
             <hr/>
 
-            <button onClick={reset}>Reset</button>
+            <button onClick={onReset} disabled={disabled}>Reset</button>
 
-            <button onClick={scramble}>Scramble</button>
+            <button onClick={onScramble} disabled={disabled}>Scramble</button>
 
-            <button onClick={solve}>Solve</button>
+            <button onClick={onSolve} disabled={disabled}>Solve</button>
 
         </div>
     );

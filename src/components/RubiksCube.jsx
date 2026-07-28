@@ -1,45 +1,34 @@
 import Cubie from "./Cubie";
+import useVisualCube from "../hooks/useVisualCube";
 
-import getCubieColors from "../utils/getCubieColors";
+export default function RubiksCube({ cube, animation }) {
 
-function stickerColor(letter) {
+    const cubies = useVisualCube(cube, animation);
 
-    switch(letter){
+    return (
 
-        case 'W': return "white";
-        case 'Y': return "yellow";
-        case 'R': return "red";
-        case 'O': return "orange";
-        case 'G': return "green";
-        case 'B': return "blue";
+        <>
 
-        default:
-            return "#111";
-    }
+            {cubies.map(cubie => (
 
-}
+                <Cubie
 
-export default function RubiksCube({ cube }) {
-if(!cube) return null;
-  const cubies = [];
+                    key={cubie.id}
 
-  for (let x = -1; x <= 1; x++) {
-    for (let y = -1; y <= 1; y++) {
-      for (let z = -1; z <= 1; z++) {
+                    id={cubie.id}
 
-        const colors = getCubieColors(x, y, z, cube);
+                    position={cubie.position}
 
-        cubies.push(
-          <Cubie
-            key={`${x}${y}${z}`}
-            position={[x, y, z]}
-            colors={colors}
-          />
-        );
+                    rotation={cubie.rotation}
 
-      }
-    }
-  }
+                    colors={cubie.colors}
 
-  return cubies;
+                />
+
+            ))}
+
+        </>
+
+    );
+
 }

@@ -11,7 +11,12 @@ export default function useCube() {
     };
 
     useEffect(() => {
-        loadCube();
+        const initialize = async () => {
+            const response = await api.get("/state");
+            setCube(response.data);
+        };
+
+        void initialize();
     }, []);
 
     return {

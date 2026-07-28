@@ -6,12 +6,43 @@ import RubiksCube from "./components/RubiksCube";
 import Controls from "./components/Controls";
 
 import useCube from "./hooks/useCube";
+import useMoveAnimation from "./hooks/useMoveAnimation";
+import api from "./services/api";
 
 export default function App() {
 
     const { cube, loadCube } = useCube();
+    const { animation, animateMove, clearAnimation, isAnimating } = useMoveAnimation();
 
     const [solution, setSolution] = useState("");
+
+    async function move(moveName) {
+        await api.post("/move", {
+            move: moveName
+        });
+
+        await animateMove(moveName);
+        await loadCube();
+        clearAnimation();
+    }
+
+    async function reset() {
+        await api.post("/reset");
+        setSolution("");
+        await loadCube();
+    }
+
+    async function scramble() {
+        await api.post("/scramble");
+        setSolution("");
+        await loadCube();
+    }
+
+    async function solve() {
+        const response = await api.post("/solve");
+
+        setSolution(response.data.solution);
+    }
 
     return (
         <div
@@ -36,7 +67,7 @@ export default function App() {
                         intensity={2}
                     />
 
-                    <RubiksCube cube={cube} />
+                    <RubiksCube cube={cube} animation={animation} />
 
                     <OrbitControls />
 
@@ -56,8 +87,11 @@ export default function App() {
                 <h2>Sanzo Cubes</h2>
 
                 <Controls
-                    loadCube={loadCube}
-                    setSolution={setSolution}
+                    onMove={move}
+                    onReset={reset}
+                    onScramble={scramble}
+                    onSolve={solve}
+                    disabled={isAnimating}
                 />
 
                 <hr />
